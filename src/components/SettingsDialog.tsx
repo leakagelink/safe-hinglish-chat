@@ -12,13 +12,11 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handlePrivacyPolicy = () => {
-    // Navigate to privacy page within the app
     window.location.href = '/privacy';
   };
 
   const handleTermsOfService = () => {
-    // For now, redirect to privacy (you can create separate terms page later)
-    window.location.href = '/privacy';
+    window.location.href = '/terms';
   };
 
   const handleSupport = () => {
@@ -26,7 +24,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
   };
 
   const handleRateApp = () => {
-    // Play Store link for rating
     window.open('https://play.google.com/store/apps/details?id=com.safechat.app', '_blank');
   };
 
@@ -59,6 +56,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
                 <p className="text-sm font-medium">SafeChat Assistant</p>
                 <p className="text-xs text-muted-foreground">Version 1.0.0</p>
                 <p className="text-xs text-muted-foreground">100% Free Family-friendly AI Chat</p>
+                <p className="text-xs text-safe-green font-medium">⚠️ Not designed for children under 13</p>
               </div>
             </div>
 
@@ -105,7 +103,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
                 <Info className="w-4 h-4 mr-3" />
                 <div className="text-left">
                   <div className="text-sm font-medium">Terms of Service</div>
-                  <div className="text-xs text-muted-foreground">App usage guidelines</div>
+                  <div className="text-xs text-muted-foreground">App usage guidelines & conditions</div>
                 </div>
               </Button>
             </div>
@@ -136,11 +134,24 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
               </Button>
             </div>
 
-            {/* AdMob Notice */}
+            {/* Enhanced AdMob Disclosure */}
             <div className="bg-muted/20 p-3 rounded-lg">
               <div className="text-xs text-muted-foreground">
-                <p className="font-medium mb-1">📱 About Ads</p>
-                <p>This free app is supported by ads. Ads help keep SafeChat completely free for everyone while maintaining our high safety standards.</p>
+                <p className="font-medium mb-1">📱 About Advertising</p>
+                <p className="mb-2"><strong>This app is supported by ads</strong></p>
+                <p>• All ads are provided by Google AdMob</p>
+                <p>• Ads keep SafeChat completely free for everyone</p>
+                <p>• Only family-safe and appropriate ads are shown</p>
+                <p>• Ad revenue helps us maintain high safety standards</p>
+                <p className="mt-2 text-[10px] opacity-70">AdMob ID: ca-app-pub-2211398170597117</p>
+              </div>
+            </div>
+
+            {/* Age Compliance Notice */}
+            <div className="bg-orange-50 border border-orange-200 p-3 rounded-lg">
+              <div className="text-xs text-orange-800">
+                <p className="font-medium mb-1">👨‍👩‍👧‍👦 Age Requirements</p>
+                <p>SafeChat is designed for users 13+ years old. Users under 13 should use with parental supervision and consent.</p>
               </div>
             </div>
           </div>
@@ -149,6 +160,9 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
           <div className="p-4 border-t border-border text-center">
             <p className="text-xs text-muted-foreground">
               Made with ❤️ for safe family conversations
+            </p>
+            <p className="text-[10px] text-muted-foreground mt-1">
+              This app is supported by ads • 100% Free Forever
             </p>
           </div>
         </div>

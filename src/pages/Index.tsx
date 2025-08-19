@@ -232,6 +232,13 @@ const Index = () => {
           </div>
         </Button>
       </div>
+
+      {/* Age Notice on Welcome Screen */}
+      <div className="mt-6 p-3 bg-orange-50 border border-orange-200 rounded-lg max-w-md">
+        <p className="text-xs text-orange-800">
+          <span className="font-medium">Age 13+ Required:</span> SafeChat is designed for users 13 years and older. Younger users should use with parental supervision.
+        </p>
+      </div>
     </div>
   );
 
@@ -330,11 +337,16 @@ const Index = () => {
           disabled={isTyping}
         />
 
-        {/* Safety Footer */}
+        {/* Enhanced Safety & Ads Footer */}
         <div className="bg-muted/30 border-t border-border p-2">
-          <div className="flex items-center justify-center gap-2 text-caption text-muted-foreground">
-            <Shield className="w-3 h-3" />
-            <span>Safe AI • Family-Friendly • Privacy Protected</span>
+          <div className="flex flex-col items-center gap-1 text-caption text-muted-foreground">
+            <div className="flex items-center justify-center gap-2">
+              <Shield className="w-3 h-3" />
+              <span>Safe AI • Family-Friendly • Privacy Protected</span>
+            </div>
+            <div className="text-[10px]">
+              <strong>This app is supported by ads</strong> • AdMob: ca-app-pub-2211398170597117 • Age 13+ Required
+            </div>
           </div>
         </div>
       </div>
