@@ -1,11 +1,40 @@
 
 /// <reference types="vite/client" />
 
-// Google AdSense type declarations
+// AdMob और Capacitor types
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle?: any[];
+    AdMob?: {
+      initialize(): Promise<void>;
+      showBanner(options: {
+        adId: string;
+        adSize: string;
+        position: string;
+        margin?: number;
+        isTesting?: boolean;
+      }): Promise<void>;
+      hideBanner(): Promise<void>;
+      resumeBanner(): Promise<void>;
+      removeBanner(): Promise<void>;
+      showInterstitial(options: {
+        adId: string;
+        isTesting?: boolean;
+      }): Promise<void>;
+    };
+    Capacitor?: {
+      platform: string;
+      isNativePlatform(): boolean;
+    };
   }
+  
+  // Development mode flag
+  const __DEV__: boolean;
+}
+
+// Ionic React platform detection
+declare module '@ionic/react' {
+  export function isPlatform(platformName: string): boolean;
 }
 
 export {};

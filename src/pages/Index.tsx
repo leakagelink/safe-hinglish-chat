@@ -5,11 +5,12 @@ import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
 import TypingIndicator from '@/components/TypingIndicator';
 import SafetyBanner from '@/components/SafetyBanner';
-import AdBanner from '@/components/AdBanner';
+import MobileAdBanner from '@/components/MobileAdBanner';
 import SessionSidebar from '@/components/SessionSidebar';
 import SettingsDialog from '@/components/SettingsDialog';
 import { GeminiService, type ChatMessage as ChatMessageType } from '@/services/geminiService';
 import { SessionService, type ChatSession } from '@/services/sessionService';
+import { adMobService } from '@/services/adMobService';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -34,7 +35,6 @@ const Index = () => {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  // Load sessions on component mount
   useEffect(() => {
     const loadedSessions = sessionService.getAllSessions();
     setSessions(loadedSessions);
@@ -48,10 +48,9 @@ const Index = () => {
     }
   }, []);
 
-  // Show interstitial ad every 5-7 messages
   useEffect(() => {
     if (messageCount > 0 && messageCount % 6 === 0) {
-      console.log('Showing Interstitial Ad: ca-app-pub-2211398170597117/3696298239');
+      adMobService.showInterstitial();
       toast.info('Ad break - Thank you for using SafeChat! 🙂');
     }
   }, [messageCount]);
@@ -75,12 +74,10 @@ const Index = () => {
       
       sessionService.saveSession(session);
       
-      // Update title if it's the first message
       if (messages.length === 1 && messages[0].isUser) {
         sessionService.updateSessionTitle(currentSessionId, messages[0].message);
       }
       
-      // Refresh sessions list
       setSessions(sessionService.getAllSessions());
     }
   };
@@ -88,17 +85,14 @@ const Index = () => {
   const handleSendMessage = async (userMessage: string) => {
     if (!userMessage.trim()) return;
 
-    // Create new session if none exists
     if (!currentSessionId) {
       const newSession = sessionService.createSession();
       setCurrentSessionId(newSession.id);
       setSessions(sessionService.getAllSessions());
     }
 
-    // Hide welcome screen
     setShowWelcome(false);
 
-    // Add user message
     const newUserMessage: ChatMessageType = {
       id: Date.now().toString(),
       message: userMessage,
@@ -114,7 +108,6 @@ const Index = () => {
     try {
       console.log('Sending message to Gemini API:', userMessage);
       
-      // Get AI response
       const aiResponse = await geminiService.sendMessage(userMessage);
       
       console.log('Received response from Gemini API:', aiResponse);
@@ -130,7 +123,6 @@ const Index = () => {
       setMessages(finalMessages);
       setMessageCount(prev => prev + 1);
       
-      // Save session after successful response
       setTimeout(saveCurrentSession, 100);
       
     } catch (error) {
@@ -147,7 +139,6 @@ const Index = () => {
       const finalMessages = [...updatedMessages, errorMessage];
       setMessages(finalMessages);
       
-      // Save session even with error
       setTimeout(saveCurrentSession, 100);
       
     } finally {
@@ -156,10 +147,8 @@ const Index = () => {
   };
 
   const handleNewChat = () => {
-    // Save current session first
     saveCurrentSession();
     
-    // Create new session
     const newSession = sessionService.createSession();
     setCurrentSessionId(newSession.id);
     setMessages([]);
@@ -168,13 +157,11 @@ const Index = () => {
     setSessions(sessionService.getAllSessions());
     setSidebarOpen(false);
     
-    // Show interstitial ad when starting new chat
-    console.log('New Chat - Showing Interstitial Ad: ca-app-pub-2211398170597117/3696298239');
+    adMobService.showInterstitial();
     toast.info('Starting fresh conversation! 🙂');
   };
 
   const handleSessionSelect = (sessionId: string) => {
-    // Save current session first
     saveCurrentSession();
     
     const session = sessionService.getSession(sessionId);
@@ -190,7 +177,6 @@ const Index = () => {
     setSessions(updatedSessions);
     
     if (sessionId === currentSessionId) {
-      // If deleting current session, start a new one
       handleNewChat();
     }
   };
@@ -233,7 +219,6 @@ const Index = () => {
         </Button>
       </div>
 
-      {/* Age Notice on Welcome Screen */}
       <div className="mt-6 p-3 bg-orange-50 border border-orange-200 rounded-lg max-w-md">
         <p className="text-xs text-orange-800">
           <span className="font-medium">Age 13+ Required:</span> SafeChat is designed for users 13 years and older. Younger users should use with parental supervision.
@@ -244,7 +229,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-chat flex">
-      {/* Session Sidebar */}
       <SessionSidebar
         sessions={sessions}
         currentSessionId={currentSessionId}
@@ -255,9 +239,7 @@ const Index = () => {
         onClose={() => setSidebarOpen(false)}
       />
 
-      {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
         <header className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-10">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-3">
@@ -300,10 +282,8 @@ const Index = () => {
           </div>
         </header>
 
-        {/* Safety Banner */}
         {showWelcome && <SafetyBanner />}
 
-        {/* Chat Area */}
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-4xl mx-auto p-4 pb-0">
             {showWelcome ? (
@@ -326,18 +306,15 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Ad Banner */}
         <div className="p-4 pt-2">
-          <AdBanner />
+          <MobileAdBanner />
         </div>
 
-        {/* Chat Input */}
         <ChatInput 
           onSendMessage={handleSendMessage}
           disabled={isTyping}
         />
 
-        {/* Enhanced Safety & Ads Footer */}
         <div className="bg-muted/30 border-t border-border p-2">
           <div className="flex flex-col items-center gap-1 text-caption text-muted-foreground">
             <div className="flex items-center justify-center gap-2">
@@ -351,7 +328,6 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Settings Dialog */}
       <SettingsDialog 
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}
