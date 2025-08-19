@@ -1,3 +1,4 @@
+
 export interface ChatMessage {
   id: string;
   message: string;
@@ -7,7 +8,7 @@ export interface ChatMessage {
 
 export class GeminiService {
   private apiKey: string;
-  private apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+  private apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
   
   // Safety instructions for family-friendly responses
   private safetyInstructions = `
@@ -72,10 +73,14 @@ export class GeminiService {
       });
 
       if (!response.ok) {
+        console.error(`API Response Status: ${response.status}`);
+        const errorText = await response.text();
+        console.error(`API Error Response: ${errorText}`);
         throw new Error(`API error: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('API Response:', data);
       
       if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
         const aiResponse = data.candidates[0].content.parts[0].text;
