@@ -10,14 +10,14 @@ class AdMobServiceImpl implements AdMobService {
   async showInterstitial(): Promise<void> {
     try {
       if (this.isAdMobAvailable() && window.AdMob) {
-        console.log('Showing AdMob Interstitial Ad...');
+        console.log('Showing AdMob Interstitial Ad (Live)...');
         await window.AdMob.showInterstitial({
           adId: this.interstitialAdId,
-          isTesting: __DEV__ || false
+          isTesting: false // Live ads for production
         });
         console.log('AdMob Interstitial Ad shown successfully');
       } else {
-        console.log('AdMob not available - showing fallback message');
+        console.log('AdMob not available - running in web browser');
       }
     } catch (error) {
       console.error('Failed to show interstitial ad:', error);

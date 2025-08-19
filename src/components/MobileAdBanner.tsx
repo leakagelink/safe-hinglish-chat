@@ -3,13 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { isPlatform } from '@ionic/react';
 
 // Capacitor AdMob types
-interface AdMobBanner {
-  show(): Promise<void>;
-  hide(): Promise<void>;
-  resume(): Promise<void>;
-  remove(): Promise<void>;
-}
-
 interface AdMob {
   initialize(): Promise<void>;
   showBanner(options: {
@@ -37,17 +30,17 @@ declare global {
 const MobileAdBanner = () => {
   const [adLoaded, setAdLoaded] = useState(false);
   const [isNative, setIsNative] = useState(false);
+  const [adError, setAdError] = useState(false);
 
   useEffect(() => {
-    // Check if we're running in a native environment
     const checkPlatform = () => {
       const native = isPlatform('android') || isPlatform('ios') || isPlatform('capacitor');
       setIsNative(native);
       
       if (native && window.AdMob) {
         initializeAdMob();
-      } else {
-        // Web fallback
+      } else if (!native) {
+        // Web browser - show preview only
         setAdLoaded(true);
       }
     };
@@ -64,15 +57,15 @@ const MobileAdBanner = () => {
             adSize: 'ADAPTIVE_BANNER',
             position: 'BOTTOM_CENTER',
             margin: 0,
-            isTesting: __DEV__ || false
+            isTesting: false // Live ads for production
           });
           
           setAdLoaded(true);
-          console.log('AdMob Banner loaded successfully');
+          console.log('AdMob Banner loaded successfully with live ads');
         }
       } catch (error) {
         console.error('AdMob initialization error:', error);
-        setAdLoaded(false);
+        setAdError(true);
       }
     };
 
@@ -80,19 +73,27 @@ const MobileAdBanner = () => {
 
     return () => {
       // Cleanup AdMob banner when component unmounts
-      if (isNative && window.AdMob) {
+      if (isNative && window.AdMob && !adError) {
         window.AdMob.hideBanner().catch(console.error);
       }
     };
   }, []);
 
-  // If running on native platform with AdMob, don't render anything
-  // AdMob will handle the banner display natively
-  if (isNative && window.AdMob && adLoaded) {
+  // If running on native platform with AdMob successfully loaded, don't render anything
+  if (isNative && window.AdMob && adLoaded && !adError) {
     return null;
   }
 
-  // Web fallback or loading state
+  // Show error state for native if AdMob failed
+  if (isNative && adError) {
+    return (
+      <div className="w-full h-[50px] bg-red-50 border border-red-200 rounded-lg flex items-center justify-center">
+        <div className="text-xs text-red-600">AdMob loading failed</div>
+      </div>
+    );
+  }
+
+  // Web browser preview or native loading state
   return (
     <div className="w-full h-[50px] bg-gradient-to-r from-blue-50 to-purple-50 border border-border rounded-lg flex items-center justify-center relative overflow-hidden">
       {!adLoaded ? (
@@ -104,17 +105,17 @@ const MobileAdBanner = () => {
         <div className="flex items-center justify-center w-full px-4">
           <div className="text-center">
             <div className="text-xs font-medium text-muted-foreground mb-1">
-              AdMob Preview Mode
+              {isNative ? 'AdMob Loading...' : 'Web Preview Mode'}
             </div>
             <div className="text-[10px] text-muted-foreground">
-              Real ads will display in production build
+              {isNative ? 'Native ads will display' : 'Live ads show in mobile app'}
             </div>
           </div>
         </div>
       )}
 
       <div className="absolute bottom-0 right-0 text-[8px] text-muted-foreground/50 px-1">
-        AdMob: ca-app-pub-2211398170597117/8727448852
+        AdMob Banner
       </div>
     </div>
   );
