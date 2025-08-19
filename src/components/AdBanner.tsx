@@ -31,8 +31,9 @@ const AdBanner = () => {
           
           script.onload = () => {
             try {
-              if (window.adsbygoogle && Array.isArray(window.adsbygoogle) && adRef.current) {
-                window.adsbygoogle.push({});
+              const adsbygoogle = (window as any).adsbygoogle;
+              if (adsbygoogle && Array.isArray(adsbygoogle) && adRef.current) {
+                adsbygoogle.push({});
                 setAdLoaded(true);
                 console.log('AdMob Banner loaded successfully');
               }
@@ -66,13 +67,16 @@ const AdBanner = () => {
     };
   }, []);
 
-  // Production AdMob banner
+  // Production AdMob banner - only show in production environment
   if (!adError && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('lovable')) {
     return (
-      <div className="w-full h-[50px] bg-background border border-border rounded-lg overflow-hidden">
+      <div className="w-full bg-background border border-border rounded-lg overflow-hidden">
+        <div className="text-xs text-muted-foreground p-2 text-center bg-muted/50">
+          Advertisement
+        </div>
         <ins 
-          className="adsbygoogle w-full h-full block"
-          style={{ display: 'block' }}
+          className="adsbygoogle w-full block"
+          style={{ display: 'block', minHeight: '50px' }}
           data-ad-client="ca-pub-2211398170597117"
           data-ad-slot="8727448852"
           data-ad-format="auto"
