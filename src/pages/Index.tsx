@@ -1,6 +1,5 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Menu, Info, Shield, History } from 'lucide-react';
+import { MessageSquare, Menu, Info, Shield, History, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatMessage from '@/components/ChatMessage';
 import ChatInput from '@/components/ChatInput';
@@ -8,6 +7,7 @@ import TypingIndicator from '@/components/TypingIndicator';
 import SafetyBanner from '@/components/SafetyBanner';
 import AdBanner from '@/components/AdBanner';
 import SessionSidebar from '@/components/SessionSidebar';
+import SettingsDialog from '@/components/SettingsDialog';
 import { GeminiService, type ChatMessage as ChatMessageType } from '@/services/geminiService';
 import { SessionService, type ChatSession } from '@/services/sessionService';
 import { toast } from 'sonner';
@@ -20,6 +20,7 @@ const Index = () => {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const geminiService = new GeminiService('AIzaSyAMGQW1CKHmdulvw2Gj9NTirg-as5d8Mrc');
@@ -257,7 +258,7 @@ const Index = () => {
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setSidebarOpen(true)}
-                className="md:hidden"
+                className="hover:bg-muted"
               >
                 <History className="w-4 h-4" />
               </Button>
@@ -275,17 +276,18 @@ const Index = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={() => setSidebarOpen(true)}
-                className="hidden md:flex"
+                onClick={handleNewChat}
+                className="hover:bg-muted"
               >
-                <History className="w-4 h-4 mr-2" />
-                History
-              </Button>
-              <Button variant="ghost" size="sm" onClick={handleNewChat}>
                 New Chat
               </Button>
-              <Button variant="ghost" size="sm">
-                <Menu className="w-4 h-4" />
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setSettingsOpen(true)}
+                className="hover:bg-muted"
+              >
+                <Settings className="w-4 h-4" />
               </Button>
             </div>
           </div>
@@ -336,6 +338,12 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* Settings Dialog */}
+      <SettingsDialog 
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
     </div>
   );
 };
