@@ -32,19 +32,20 @@ const AdBanner = () => {
           <span className="text-xs">Loading Ad...</span>
         </div>
       ) : (
-        <div className="flex items-center justify-between w-full px-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center">
-              <span className="text-white text-xs font-bold">SC</span>
+        <div className="flex items-center justify-center w-full px-4">
+          {/* Sample Banner Ad Content */}
+          <div className="flex items-center gap-3 text-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-red-500 rounded-md flex items-center justify-center">
+              <span className="text-white text-xs font-bold">🎮</span>
             </div>
             <div className="text-xs">
-              <div className="font-medium text-foreground">SafeChat Pro</div>
-              <div className="text-muted-foreground">Remove ads & get premium features</div>
+              <div className="font-medium text-foreground">Fun Mobile Game</div>
+              <div className="text-muted-foreground">Download now and play for free!</div>
+            </div>
+            <div className="bg-primary text-primary-foreground px-2 py-1 rounded text-[10px] font-medium">
+              Install
             </div>
           </div>
-          <button className="bg-primary text-primary-foreground px-3 py-1 rounded text-xs font-medium hover:bg-primary/90 transition-colors">
-            Upgrade
-          </button>
         </div>
       )}
 

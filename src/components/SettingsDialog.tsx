@@ -12,15 +12,17 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handlePrivacyPolicy = () => {
-    window.open('https://safechat-privacy-policy.netlify.app/', '_blank');
+    // Navigate to privacy page within the app
+    window.location.href = '/privacy';
   };
 
   const handleTermsOfService = () => {
-    window.open('https://safechat-terms.netlify.app/', '_blank');
+    // For now, redirect to privacy (you can create separate terms page later)
+    window.location.href = '/privacy';
   };
 
   const handleSupport = () => {
-    window.open('mailto:support@safechat.app?subject=SafeChat Support', '_blank');
+    window.open('mailto:safechat@socilet.com?subject=SafeChat Support', '_blank');
   };
 
   const handleRateApp = () => {
@@ -56,7 +58,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
               <div className="space-y-1">
                 <p className="text-sm font-medium">SafeChat Assistant</p>
                 <p className="text-xs text-muted-foreground">Version 1.0.0</p>
-                <p className="text-xs text-muted-foreground">Family-friendly AI Chat</p>
+                <p className="text-xs text-muted-foreground">100% Free Family-friendly AI Chat</p>
               </div>
             </div>
 
@@ -73,6 +75,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
                     <p>• Chat history stays on your device only</p>
                     <p>• No login or registration required</p>
                     <p>• Family-safe AI responses guaranteed</p>
+                    <p>• Completely free - no premium features</p>
                   </div>
                 </div>
               </div>
@@ -92,7 +95,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
                   <div className="text-sm font-medium">Privacy Policy</div>
                   <div className="text-xs text-muted-foreground">How we protect your privacy</div>
                 </div>
-                <ExternalLink className="w-3 h-3 ml-auto" />
               </Button>
 
               <Button 
@@ -105,7 +107,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
                   <div className="text-sm font-medium">Terms of Service</div>
                   <div className="text-xs text-muted-foreground">App usage guidelines</div>
                 </div>
-                <ExternalLink className="w-3 h-3 ml-auto" />
               </Button>
             </div>
 
@@ -121,7 +122,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
                 <HelpCircle className="w-4 h-4 mr-3" />
                 <div className="text-left">
                   <div className="text-sm font-medium">Contact Support</div>
-                  <div className="text-xs text-muted-foreground">Get help and report issues</div>
+                  <div className="text-xs text-muted-foreground">safechat@socilet.com</div>
                 </div>
                 <ExternalLink className="w-3 h-3 ml-auto" />
               </Button>
@@ -139,7 +140,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ isOpen, onClose }) => {
             <div className="bg-muted/20 p-3 rounded-lg">
               <div className="text-xs text-muted-foreground">
                 <p className="font-medium mb-1">📱 About Ads</p>
-                <p>This free app is supported by ads. Ads help keep SafeChat free for everyone while maintaining our high safety standards.</p>
+                <p>This free app is supported by ads. Ads help keep SafeChat completely free for everyone while maintaining our high safety standards.</p>
               </div>
             </div>
           </div>
