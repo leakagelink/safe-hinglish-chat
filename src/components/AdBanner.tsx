@@ -31,7 +31,7 @@ const AdBanner = () => {
           
           script.onload = () => {
             try {
-              if (window.adsbygoogle && adRef.current) {
+              if (window.adsbygoogle && Array.isArray(window.adsbygoogle) && adRef.current) {
                 window.adsbygoogle.push({});
                 setAdLoaded(true);
                 console.log('AdMob Banner loaded successfully');
