@@ -1,3 +1,4 @@
+
 # Android Manifest Configuration for AdMob
 
 ## Required AndroidManifest.xml Configuration
@@ -46,7 +47,7 @@ Add these configurations to `android/app/src/main/AndroidManifest.xml`:
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <!-- AdMob App ID -->
+        <!-- AdMob App ID - CORRECT PRODUCTION ID -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-2211398170597117~9697749740"/>
@@ -78,3 +79,5 @@ Add these configurations to `android/app/src/main/AndroidManifest.xml`:
     </application>
 </manifest>
 ```
+
+**IMPORTANT:** Make sure to update this file manually in Android Studio after syncing!
