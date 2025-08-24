@@ -42,19 +42,11 @@ class AdMobServiceImpl implements AdMobService {
         return;
       }
 
-      console.log('🔧 Initializing AdMob with config:', {
-        appId: ADMOB_CONFIG.appId,
-        testMode: ADMOB_CONFIG.forceTestAds || ADMOB_CONFIG.isDevelopment,
-        testDevices: ADMOB_CONFIG.testDevices
-      });
+      console.log('🔧 Initializing AdMob (no-args, using capacitor.config.ts plugin options)...');
 
-      // Initialize AdMob with proper configuration
-      await window.AdMob.initialize({
-        requestTrackingAuthorization: true,
-        testingDevices: ADMOB_CONFIG.testDevices,
-        initializeForTesting: ADMOB_CONFIG.forceTestAds || ADMOB_CONFIG.isDevelopment
-      });
-      
+      // IMPORTANT: initialize without arguments for @capacitor-community/admob v7
+      await window.AdMob.initialize();
+
       this.isInitialized = true;
       console.log('✅ AdMob initialized successfully');
       
