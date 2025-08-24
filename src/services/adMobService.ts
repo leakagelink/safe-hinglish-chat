@@ -1,4 +1,3 @@
-
 import ADMOB_CONFIG from '../config/admobConfig';
 
 interface AdMobService {
@@ -15,13 +14,10 @@ class AdMobServiceImpl implements AdMobService {
   async initialize(): Promise<void> {
     try {
       if (this.isAdMobAvailable() && window.AdMob && !this.isInitialized) {
-        console.log('Initializing AdMob with App ID:', ADMOB_CONFIG.appId);
+        console.log('Initializing AdMob...');
         
-        await window.AdMob.initialize({
-          requestTrackingAuthorization: true,
-          testingDevices: ADMOB_CONFIG.testDevices,
-          initializeForTesting: ADMOB_CONFIG.isDevelopment
-        });
+        // Initialize without arguments for the new AdMob plugin version
+        await window.AdMob.initialize();
         
         this.isInitialized = true;
         console.log('AdMob initialized successfully');
@@ -38,19 +34,22 @@ class AdMobServiceImpl implements AdMobService {
       }
 
       if (this.isAdMobAvailable() && window.AdMob) {
-        console.log('Showing AdMob Interstitial Ad...');
+        console.log('Preparing Interstitial Ad...');
         
-        // Use test ad unit for development, real for production
         const adId = ADMOB_CONFIG.isDevelopment 
           ? 'ca-app-pub-3940256099942544/1033173712' // Test interstitial
           : ADMOB_CONFIG.adUnits.interstitial;
 
-        await window.AdMob.showInterstitial({
+        // Prepare the interstitial ad
+        await window.AdMob.prepareInterstitial({
           adId: adId,
           isTesting: ADMOB_CONFIG.isDevelopment
         });
+
+        // Show the interstitial ad
+        await window.AdMob.showInterstitial();
         
-        console.log('AdMob Interstitial Ad shown successfully');
+        console.log('Interstitial Ad shown successfully');
       } else {
         console.log('AdMob not available - running in web browser');
       }
@@ -66,9 +65,8 @@ class AdMobServiceImpl implements AdMobService {
       }
 
       if (this.isAdMobAvailable() && window.AdMob) {
-        console.log('Showing AdMob Banner Ad...');
+        console.log('Showing Banner Ad...');
         
-        // Use test ad unit for development, real for production
         const adId = ADMOB_CONFIG.isDevelopment 
           ? 'ca-app-pub-3940256099942544/6300978111' // Test banner
           : ADMOB_CONFIG.adUnits.banner;
@@ -81,7 +79,7 @@ class AdMobServiceImpl implements AdMobService {
           isTesting: ADMOB_CONFIG.isDevelopment
         });
         
-        console.log('AdMob Banner shown successfully');
+        console.log('Banner Ad shown successfully');
       } else {
         console.log('AdMob not available - running in web browser');
       }
