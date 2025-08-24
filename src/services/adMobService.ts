@@ -34,20 +34,17 @@ class AdMobServiceImpl implements AdMobService {
       }
 
       if (this.isAdMobAvailable() && window.AdMob) {
-        console.log('Preparing Interstitial Ad...');
+        console.log('Showing Interstitial Ad...');
         
         const adId = ADMOB_CONFIG.isDevelopment 
           ? 'ca-app-pub-3940256099942544/1033173712' // Test interstitial
           : ADMOB_CONFIG.adUnits.interstitial;
 
-        // Prepare the interstitial ad
-        await window.AdMob.prepareInterstitial({
+        // Show the interstitial ad with proper options
+        await window.AdMob.showInterstitial({
           adId: adId,
           isTesting: ADMOB_CONFIG.isDevelopment
         });
-
-        // Show the interstitial ad
-        await window.AdMob.showInterstitial();
         
         console.log('Interstitial Ad shown successfully');
       } else {
