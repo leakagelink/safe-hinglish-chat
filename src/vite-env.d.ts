@@ -1,16 +1,20 @@
 
 /// <reference types="vite/client" />
 
-// AdMob और Capacitor types
+// AdMob और Capacitor types with proper method signatures
 declare global {
   interface Window {
     adsbygoogle?: any[];
     AdMob?: {
-      initialize(): Promise<void>;
+      initialize(config?: {
+        requestTrackingAuthorization?: boolean;
+        testingDevices?: string[];
+        initializeForTesting?: boolean;
+      }): Promise<void>;
       showBanner(options: {
         adId: string;
-        adSize: string;
-        position: string;
+        adSize?: string;
+        position?: string;
         margin?: number;
         isTesting?: boolean;
       }): Promise<void>;
@@ -18,6 +22,10 @@ declare global {
       resumeBanner(): Promise<void>;
       removeBanner(): Promise<void>;
       showInterstitial(options: {
+        adId: string;
+        isTesting?: boolean;
+      }): Promise<void>;
+      showRewardedVideo?(options: {
         adId: string;
         isTesting?: boolean;
       }): Promise<void>;

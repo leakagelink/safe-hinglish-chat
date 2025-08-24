@@ -11,6 +11,7 @@ import SettingsDialog from '@/components/SettingsDialog';
 import { GeminiService, type ChatMessage as ChatMessageType } from '@/services/geminiService';
 import { SessionService, type ChatSession } from '@/services/sessionService';
 import { adMobService } from '@/services/adMobService';
+import { AdMobDebugger } from '@/utils/adMobDebugger';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -46,11 +47,28 @@ const Index = () => {
         loadSession(currentSession);
       }
     }
+
+    // Initialize AdMob debugging
+    console.log('🚀 SafeChat App Loaded - Initializing AdMob Debug...');
+    AdMobDebugger.logPlatformInfo();
+    
+    // Test AdMob after a delay
+    setTimeout(async () => {
+      try {
+        await AdMobDebugger.testAdMobMethods();
+      } catch (error) {
+        console.error('AdMob debug test failed:', error);
+      }
+    }, 3000);
+    
   }, []);
 
   useEffect(() => {
     if (messageCount > 0 && messageCount % 6 === 0) {
-      adMobService.showInterstitial();
+      console.log('🎯 Showing interstitial ad after 6 messages...');
+      adMobService.showInterstitial().catch(error => {
+        console.error('Failed to show interstitial:', error);
+      });
       toast.info('Ad break - Thank you for using SafeChat! 🙂');
     }
   }, [messageCount]);
