@@ -17,12 +17,8 @@ class AdMobServiceImpl implements AdMobService {
       if (this.isAdMobAvailable() && window.AdMob && !this.isInitialized) {
         console.log('Initializing AdMob...');
         
-        // Initialize AdMob with proper configuration
-        await window.AdMob.initialize({
-          requestTrackingAuthorization: true,
-          testingDevices: ADMOB_CONFIG.testDevices,
-          initializeForTesting: ADMOB_CONFIG.forceTestAds || ADMOB_CONFIG.isDevelopment
-        });
+        // Initialize AdMob without arguments as per the API
+        await window.AdMob.initialize();
         
         this.isInitialized = true;
         console.log('AdMob initialized successfully');
