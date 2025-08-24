@@ -16,10 +16,10 @@ const config: CapacitorConfig = {
   },
   plugins: {
     AdMob: {
-      appId: 'ca-app-pub-2211398170597117~9697749740', // Updated with your real AdMob App ID
+      appId: 'ca-app-pub-2211398170597117~9697749740',
       requestTrackingAuthorization: true,
       testingDevices: ['2077ef9a63d2b398840261c8221a0c9b'],
-      initializeForTesting: false, // false for live ads
+      initializeForTesting: true, // Enable test ads during development
     },
   },
 };
