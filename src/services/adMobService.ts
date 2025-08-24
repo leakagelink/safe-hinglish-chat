@@ -1,3 +1,4 @@
+
 import ADMOB_CONFIG from '../config/admobConfig';
 
 interface AdMobService {
@@ -16,11 +17,16 @@ class AdMobServiceImpl implements AdMobService {
       if (this.isAdMobAvailable() && window.AdMob && !this.isInitialized) {
         console.log('Initializing AdMob...');
         
-        // Initialize without arguments for the new AdMob plugin version
-        await window.AdMob.initialize();
+        // Initialize AdMob with proper configuration
+        await window.AdMob.initialize({
+          requestTrackingAuthorization: true,
+          testingDevices: ADMOB_CONFIG.testDevices,
+          initializeForTesting: ADMOB_CONFIG.forceTestAds || ADMOB_CONFIG.isDevelopment
+        });
         
         this.isInitialized = true;
         console.log('AdMob initialized successfully');
+        console.log('Test mode enabled:', ADMOB_CONFIG.forceTestAds || ADMOB_CONFIG.isDevelopment);
       }
     } catch (error) {
       console.error('AdMob initialization failed:', error);
@@ -36,14 +42,16 @@ class AdMobServiceImpl implements AdMobService {
       if (this.isAdMobAvailable() && window.AdMob) {
         console.log('Showing Interstitial Ad...');
         
-        const adId = ADMOB_CONFIG.isDevelopment 
-          ? 'ca-app-pub-3940256099942544/1033173712' // Test interstitial
+        // Always use test ads if forceTestAds is true, otherwise check environment
+        const useTestAds = ADMOB_CONFIG.forceTestAds || ADMOB_CONFIG.isDevelopment;
+        const adId = useTestAds 
+          ? 'ca-app-pub-3940256099942544/1033173712' // Google test interstitial ID
           : ADMOB_CONFIG.adUnits.interstitial;
 
-        // Show the interstitial ad with proper options
+        console.log('Using ad ID:', adId, 'Test mode:', useTestAds);
+
         await window.AdMob.showInterstitial({
-          adId: adId,
-          isTesting: ADMOB_CONFIG.isDevelopment
+          adId: adId
         });
         
         console.log('Interstitial Ad shown successfully');
@@ -64,16 +72,19 @@ class AdMobServiceImpl implements AdMobService {
       if (this.isAdMobAvailable() && window.AdMob) {
         console.log('Showing Banner Ad...');
         
-        const adId = ADMOB_CONFIG.isDevelopment 
-          ? 'ca-app-pub-3940256099942544/6300978111' // Test banner
+        // Always use test ads if forceTestAds is true, otherwise check environment
+        const useTestAds = ADMOB_CONFIG.forceTestAds || ADMOB_CONFIG.isDevelopment;
+        const adId = useTestAds 
+          ? 'ca-app-pub-3940256099942544/6300978111' // Google test banner ID
           : ADMOB_CONFIG.adUnits.banner;
+
+        console.log('Using banner ad ID:', adId, 'Test mode:', useTestAds);
 
         await window.AdMob.showBanner({
           adId: adId,
           adSize: 'ADAPTIVE_BANNER',
           position: 'BOTTOM_CENTER',
-          margin: 0,
-          isTesting: ADMOB_CONFIG.isDevelopment
+          margin: 0
         });
         
         console.log('Banner Ad shown successfully');

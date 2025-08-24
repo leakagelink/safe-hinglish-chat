@@ -19,7 +19,7 @@ const config: CapacitorConfig = {
       appId: 'ca-app-pub-2211398170597117~9697749740',
       requestTrackingAuthorization: true,
       testingDevices: ['2077ef9a63d2b398840261c8221a0c9b'],
-      initializeForTesting: false, // Set to false for production ads
+      initializeForTesting: true, // Enable test ads for development
     },
   },
 };

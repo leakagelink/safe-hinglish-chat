@@ -19,6 +19,9 @@ export const ADMOB_CONFIG = {
   // Environment detection
   isProduction: process.env.NODE_ENV === 'production',
   
+  // FORCE TEST ADS for development - Change this to false when you want live ads
+  forceTestAds: true, // Set to true to always show test ads during development
+  
   // Development mode - use test ads in development, real ads in production
   isDevelopment: process.env.NODE_ENV === 'development' || 
                  window.location.hostname.includes('localhost') || 
